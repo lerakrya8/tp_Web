@@ -42,7 +42,10 @@
                         <div class="row answer-box">
                             <div class="col-3">
                                 <img class="q-image-answer" src="img/grandbeauty00.jpg" title="Светланочка">
-                                <input class="like" type="number" value="5">
+                                <div class='like'>
+                                    <button class='like-toggle basic one-q'>♥</button>
+                                    <span class='hidden color-like'>Like!</span>
+                                </div>
                             </div>
                             <div class="col-9">
                                 <h2><a href="https://vk.com/lerchkkk">Как поступить в технопарк?</a></h2>
@@ -58,13 +61,23 @@
                                     <a href="https://park.mail.ru/feed/subscribed/2/">techopark</a>
                                     <a href="https://park.mail.ru/feed/subscribed/2/">bmstu</a>
                                 </div>
+                                
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                              <textarea type="text" class="form-control form-control-lg textarea" id="colFormLabelLg" placeholder="Enter your answer here..."></textarea>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-answer">Answer</button>
                         <hr>
                         <div class="row question-box">
                             <div class="col-3">
                                 <img class="q-image" src="img/grandbeauty00.jpg" title="Светланочка">
-                                <input class="like" type="number" value="5">
+                                <div class='like'>
+                                    <button class='like-toggle basic'>♥</button>
+                                    <span class='hidden color-like'>Like!</span>
+                                </div>
                             </div>
                             <div class="col-9">
                                 <p class="answer"> Как показывает практика, студенты второго высшего образования не тянут 
@@ -82,7 +95,10 @@
                         <div class="row question-box">
                             <div class="col-3">
                                 <img class="q-image" src="img/grandbeauty00.jpg" title="Светланочка">
-                                <input class="like" type="number" value="5">
+                                <div class='like'>
+                                    <button class='like-toggle basic'>♥</button>
+                                    <span class='hidden color-like'>Like!</span>
+                                </div>
                             </div>
                             <div class="col-9">
                                 <p class="answer">Основная программа Технопарка представляет собой продуманную «жесткую» последовательность 
@@ -98,13 +114,6 @@
                                   </div>
                             </div>
                         </div>
-                        <hr>
-                        <div class="form-group row">
-                            <div class="col-sm-12">
-                              <textarea type="text" class="form-control form-control-lg textarea" id="colFormLabelLg" placeholder="Enter your answer here..."></textarea>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-outline-primary btn-answer">Answer</button>
                     </div>
                     <div class="col-3 popular-tags">
                         <h3>Popular Tags</h3>
@@ -136,5 +145,6 @@
         <script src="js/jquery.slim.min.js"></script>
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/my_js.js"></script>
     </body>
 </html>

@@ -13,6 +13,7 @@
   color: #2F4F4F;
 }
 
+
   main > .container-con {
     padding: 90px 15px 0;
   }
@@ -95,13 +96,6 @@
   .q-image {
     height: 130px;
     margin: 20px 15px 20px 5px;
-  }
-
-  .like {
-    width: 50px;
-    margin-top: 10px;
-    margin-left: 20%;
-    
   }
 
   .color-bk {
@@ -293,13 +287,14 @@
   }
 
   .textarea {
+    margin-top: 30px;
     margin-left: 10px;
   }
 
   .btn-answer {
     margin-left: 12px;
     margin-top: 30px;
-    margin-bottom: 100px;
+    margin-bottom: 40px;
     font-size: 25px;
   }
 
@@ -329,6 +324,48 @@
   .new-account:hover {
     color: #2F4F4F;
     text-decoration: underline;
+  }
+
+  * {
+    transition: all 0.3s linear;
+  }
+
+  .hidden{
+    font-size: 0;
+  }
+  .color-like {
+    color: #CD5C5C;
+  }
+
+  .like-toggle{
+    outline: none;
+    box-shadow: none;
+    border: none;
+    width: 50px;
+    height: 40px;
+    font-size: 1.3em;
+    border-radius: 10px;
+    margin-left: 65px;
+    background: white;
+    color: #CD5C5C;
+    background: #FFE4E1;
+    padding: 1px 1px 1px 1px;
+  }
+  
+  .like-active.basic{
+    border: none;
+    background: #CD5C5C;
+    color: white;
+    margin-left: 50px;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+
+  .one-q {
+    margin-left: 110px;
+    width: 60px;
   }
 
 
