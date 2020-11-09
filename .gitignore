@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+askme-django/venv/
+askme-django/node_modules/
+.idea
+.vscode
+*.pyc
+__pycache__

@@ -1,0 +1,17 @@
+{% extends 'inc/base.html' %}
+{% block content %}
+
+{% block navbar %}
+{% include 'inc/navbar-out.html' %}
+{% endblock navbar %}
+<p class="new-question">Log In</p>
+<p class="error">Sorry, wrong email!</p>
+<form>
+  {% for block in logs %}
+  {% include 'inc/one_block.html' %}
+{% endfor %}
+</form>
+<button type="button" class="btn btn-outline-info btn-ask">Log In!</button>
+<a class="new-account" href="/singup">create new account</a>
+{% endblock content %}
+                    

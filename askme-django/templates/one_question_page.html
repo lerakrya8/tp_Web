@@ -1,0 +1,22 @@
+{% extends 'inc/base.html' %}
+{% block content %}
+
+{% block navbar %}
+{% include 'inc/navbar-out.html' %}
+{% endblock navbar %}
+
+{% include 'inc/question_block.html' %}
+
+<div class="form-group row">
+    <div class="col-sm-12">
+        <textarea type="text" class="form-control form-control-lg textarea" id="colFormLabelLg" placeholder="Enter your answer here..."></textarea>
+    </div>
+</div>
+<button type="button" class="btn btn-outline-primary btn-answer">Answer</button>
+<hr>
+
+{% for answer in answers %} 
+    {% include 'inc/answer.html' %}
+{% endfor %}
+{% endblock content %}
+ 

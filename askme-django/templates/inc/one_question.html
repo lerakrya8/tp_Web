@@ -1,0 +1,22 @@
+{% load static %}
+
+<div class="row question-box">
+    <div class="col-3">
+        <img class="q-image" src="{% static "img/grandbeauty00.jpg" %}" title="Светланочка">
+            <div class='like'>
+            <button class='like-toggle basic'>♥</button>
+            <span class='hidden color-like'>Like!</span>
+        </div>
+    </div>
+    <div class="col-9">
+        <h2><a href="/question/{{ question.id }}">{{ question.title }}</a></h2>
+        <p class="text">{{ question.text }}
+        </p>
+        <div class="footer-column">
+            <a href="/question/{{ question.id }}">answers ({{ question.answers }})</a>
+            <p class="tags">Tags:</p>
+            <a href="/tag/{{ question.tag1 }}">{{ question.tag1 }}</a>
+            <a href="/tag/{{ question.tag2 }}">{{ question.tag2 }}</a>
+        </div>
+    </div>
+</div>

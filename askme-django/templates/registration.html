@@ -1,0 +1,20 @@
+{% extends 'inc/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% block navbar %}
+{% include 'inc/navbar-out.html' %}
+{% endblock navbar %}
+<p class="new-question">Registration</p>
+<p class="error">Sorry, this email address already registrated!</p>
+<form>
+  {% for block in getRegBlocks %}
+    {% include 'inc/one_block.html' %}
+  {% endfor %}
+
+  {% include 'inc/img.html' %}
+</form>
+<button type="button" class="btn btn-outline-info btn-ask">Register!</button>
+{% endblock content %}
