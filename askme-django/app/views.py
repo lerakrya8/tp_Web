@@ -2,19 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-questions = [
-    {
-        'id': idx,
-        'title': f'title {idx}',
-        'text': 'text text',
-        'tag1': f'tag{idx}',
-        'tag2': f'tag{idx + 1}',
-        'answers': idx % 6 + idx % 2,
-    } for idx in range(30)
-]
-
 popular_tags = [
-    'TechnoPark',
+    'technopark',
     'C/C+',
     'perl',
     'Python',
@@ -24,6 +13,19 @@ popular_tags = [
     'Firefox',
     'Web-technology'
 ]
+
+questions = [
+    {
+        'id': idx,
+        'title': f'title {idx}',
+        'text': 'text text',
+        'tag1': popular_tags[idx % 9],
+        'tag2': popular_tags[idx % 9 + 1],
+        'answers': idx % 6 + idx % 2,
+    } for idx in range(8)
+]
+
+
 best_members = [
     'Mr.Freeman',
     'Dr.House',
@@ -199,8 +201,6 @@ def main_page(request):
         })
 
 def form_with_settings(request):
-    print(settings)
-    print('lera')
     return render(request, 'form_with_settings.html', {
         'popular_tags': popular_tags,
         'best_members': best_members,
@@ -209,7 +209,7 @@ def form_with_settings(request):
 
 def question_by_tag(request, tag):
     questions_ = []
-    for idx in questions_ex:
+    for idx in questions:
         if idx['tag1'] == tag or idx['tag2'] == tag:
             questions_.append(idx)
 
@@ -234,12 +234,15 @@ def hot_questions(request):
         })
 
 def one_question_page(request, num_quest):
-    question = questions_ex[int(num_quest)]
+    question = questions[int(num_quest)]
+    print(question)
+    print(question['answers'])
+    print(answers[:question['answers']])
 
     return render(request, 'one_question_page.html', {
         'question': question,
         'num_q': num_quest,
-        'answers': answers,
+        'answers': answers[:question['answers']],
         'popular_tags': popular_tags,
         'best_members': best_members
     })
