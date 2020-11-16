@@ -7,10 +7,13 @@
   src: url('Comfortaa-VariableFont_wght.ttf');
 }
 
+body {
+  color: #2F4F4F;
+}
+
 * {
   font-family: Comfortaa;
   font-size: 18px;
-  color: #2F4F4F;
 }
 
 
@@ -326,46 +329,49 @@
     text-decoration: underline;
   }
 
-  * {
-    transition: all 0.3s linear;
-  }
-
-  .hidden{
-    font-size: 0;
-  }
-  .color-like {
-    color: #CD5C5C;
-  }
-
-  .like-toggle{
-    outline: none;
-    box-shadow: none;
-    border: none;
-    width: 50px;
-    height: 40px;
-    font-size: 1.3em;
-    border-radius: 10px;
-    margin-left: 65px;
-    background: white;
-    color: #CD5C5C;
-    background: #FFE4E1;
-    padding: 1px 1px 1px 1px;
-  }
-  
-  .like-active.basic{
-    border: none;
-    background: #CD5C5C;
-    color: white;
-    margin-left: 50px;
-  }
-  
-  button:focus {
-    outline: none;
-  }
-
   .one-q {
     margin-left: 110px;
     width: 60px;
+  }
+
+  a.like-button{
+    font-size:1.5rem;
+    padding: 10px;
+    color: #AAAAAA !important;
+  }
+
+  a.like-button:hover {
+      text-decoration: none;
+  }
+  
+  @keyframes like-bounce-up {
+      0%   {top:0px;}
+      25%  {top:-5px;}
+      50%  {top:0px;}
+      75%  {top:-3px;}
+      100% {top:0px;}
+  }
+  @keyframes like-bounce-down {
+      0%   {top:0px;}
+      25%  {top:5px;}
+      50%  {top:0px;}
+      75%  {top:3px;}
+      100% {top:0px;}
+  }
+  .like-button--active {
+      position: relative;
+      animation-duration: .8s;
+      -webkit-animation-timing-function: ease;
+      animation-timing-function: ease;
+      transform-origin: 0% 0%;
+  }
+  .like-button-up.like-button--active {
+    animation-name: like-bounce-up;
+    color:#4BBBFF !important;
+  }
+  .like-button-down.like-button--active {
+    animation-name: like-bounce-down;
+    color:#FF5050 !important;
   }
 
 

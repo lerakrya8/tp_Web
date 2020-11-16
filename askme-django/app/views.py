@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from app.models import Question, Tag, Answer, UserProfile
 
 popular_tags = [
     'technopark',
@@ -14,13 +15,14 @@ popular_tags = [
     'Web-technology'
 ]
 
+tags = ['technopark', 'bmstu']
+
 questions = [
     {
         'id': idx,
         'title': f'title {idx}',
         'text': 'text text',
-        'tag1': popular_tags[idx % 9],
-        'tag2': popular_tags[idx % 9 + 1],
+        'tags': tags,
         'answers': idx % 6 + idx % 2,
     } for idx in range(8)
 ]
@@ -70,81 +72,6 @@ answers = [
     }
 ]
 
-questions_ex = [
-    {
-        'id': 1,
-        'title': 'title 0',
-        'text': 'text text',
-        'tag1': 'technopark',
-        'tag2': 'bmstu',
-        'answers': 3
-    },
-    {
-        'id': 2,
-        'title': 'title 1',
-        'text': 'text text',
-        'tag1': 'tag2',
-        'tag2': 'tag3',
-        'answers': 5
-    },
-    {
-        'id': 3,
-        'title': 'title 2',
-        'text': 'text text',
-        'tag1': 'technopark',
-        'tag2': '',
-        'answers': 2
-    },
-    {
-        'id': 4,
-        'title': 'title 3',
-        'text': 'text text',
-        'tag1': 'technopark',
-        'tag2': 'bmstu',
-        'answers': 7
-    },
-    {
-        'id': 5,
-        'title': 'title 4',
-        'text': 'text text',
-        'tag1': 'tag2',
-        'tag2': 'tag3',
-        'answers': 3
-    },
-    {
-        'id': 6,
-        'title': 'title 5',
-        'text': 'text text',
-        'tag1': 'tag3',
-        'tag2': '',
-        'answers': 4
-    },
-    {
-        'id': 7,
-        'title': 'title 6',
-        'text': 'text text',
-        'tag1': 'technopark',
-        'tag2': 'bmstu',
-        'answers': 3
-    },
-    {
-        'id': 8,
-        'title': 'title 7',
-        'text': 'text text',
-        'tag1': 'technopark',
-        'tag2': 'bmstu',
-        'answers': 3
-    },
-    {
-        'id': 9,
-        'title': 'title 8',
-        'text': 'text text',
-        'tag1': 'technopark',
-        'tag2': 'bmstu',
-        'answers': 3
-    }
-    
-]
 
 for idx, ids, pl, value in zip(name_blocks, type_blocks, placeholders, values):
         getRegBlocks.append({
@@ -191,10 +118,17 @@ def paginate (array, request):
 
 
 def main_page(request):
+    questions = Question.objects.all_questions()
+    print(questions)
     page_obj, page = paginate(questions, request)
+
+    best_members = UserProfile.objects.best_members()
+
+    popular_tags = Tag.objects.popular_tags()
 
     return render(request, 'main_page.html', {
         'questions': page_obj,
+        'tags': tags,
         'page': page,
         'popular_tags': popular_tags,
         'best_members': best_members
@@ -210,13 +144,15 @@ def form_with_settings(request):
 def question_by_tag(request, tag):
     questions_ = []
     for idx in questions:
-        if idx['tag1'] == tag or idx['tag2'] == tag:
-            questions_.append(idx)
+        for ids in questions['tags']:
+            if ids == tag:
+                questions_.append(idx)
 
     page_obj, page = paginate(questions_, request)
 
     return render(request, 'question_by_tag.html', {
         'questions': page_obj,
+        'tags': tags,
         'page': page,
         'tag': tag,
         'popular_tags': popular_tags,
@@ -228,6 +164,7 @@ def hot_questions(request):
 
     return render(request, 'hot_questions.html', {
         'questions': page_obj,
+        'tags': tags,
         'page': page,
         'popular_tags': popular_tags,
         'best_members': best_members
@@ -241,6 +178,7 @@ def one_question_page(request, num_quest):
 
     return render(request, 'one_question_page.html', {
         'question': question,
+        'tags': tags,
         'num_q': num_quest,
         'answers': answers[:question['answers']],
         'popular_tags': popular_tags,

@@ -14,8 +14,10 @@
         </p>
         <div class="footer-column">
             <p class="tags">Tags:</p>
-            <a href="/tag/{{ question.tag1 }}">{{ question.tag1 }}</a>
-            <a href="/tag/{{ question.tag2 }}">{{ question.tag2 }}</a>
+            {% for tag in tags %} 
+            <a href="/tag/{{ tag }}">{{ tag }}</a>
+            <p></p>
+            {% endfor %}
         </div>
     </div>
 </div>
