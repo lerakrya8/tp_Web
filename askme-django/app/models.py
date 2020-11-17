@@ -1,18 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 class QuestionManager(models.Manager):
     def all_questions(self):
         return self.all().order_by('-date_create').reverse()
 
     def hot_questions(self):
-        return self.annotate(sum_likes = sum('likes')).order_by('-sum_likes').reverse()
+        return self.annotate(sum_likes = Count('likes')).order_by('-sum_likes').reverse()
 
     def questions_by_tag(self, tag):
         return self.filter(tags__tag_title = tag)
 
     def one_question(self, number):
         return self.filter(pk = number)
+
+    # def question_likes(self):
+    #     return self.all().count()
 
     
 class AnswerManager(models.Manager):
@@ -55,6 +59,7 @@ class Question(models.Model):
     date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     tags = models.ManyToManyField(Tag, blank=True)
     likes = models.ManyToManyField(UserProfile, blank=True, related_name='questions_like')
+    dislikes = models.ManyToManyField(UserProfile, blank=True, related_name='questions_dislike')
     answers = models.IntegerField(default=0)
 
     objects = QuestionManager()
@@ -77,6 +82,7 @@ class Answer(models.Model):
     date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     likes = models.ManyToManyField(UserProfile, blank=True, related_name='answers_like')
+    dislikes = models.ManyToManyField(UserProfile, blank=True, related_name='answers_dislikes')
 
     objects = AnswerManager()
 

@@ -1,8 +1,10 @@
 {% extends 'inc/base.html' %}
 {% load static %}
 {% block content %}
+{% block title %}
 <p class="new-question">New Question</p>
 <form>
+{% endblock title %}
   <div class="form-group row">
     <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Title</label>
     <div class="col-sm-10">

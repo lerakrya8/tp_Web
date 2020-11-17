@@ -12,14 +12,15 @@
             </a>
         </div>
         <div class='num-likes'>
-            <p> 5 likes </p>
-            <p> 1 dislikes </p>
+            <p> {{ question.likes.all.count }} likes </p>
+            <p> {{ question.dislikes.all.count }} dislikes </p>
         </div>
     </div>
     <div class="col-9">
         <h2><a href="/question/{{ question.id }}">{{ question.title }}</a></h2>
-        <p class="text">{{ question.text }}
-        </p>
+        <p class="Datetime">{{ question.date_create }}</p>
+        <p class="text">{{ question.text }}</p>
+
         <div class="footer-column">
             <a href="/question/{{ question.id }}">answers ({{ question.answers }})</a>
             <p class="tags">Tags:</p>

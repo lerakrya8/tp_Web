@@ -45,33 +45,6 @@ getRegBlocks = []
 login = []
 settings = []
 
-answers = [
-    {
-        'text': 'text1 tex1t'
-    },
-        {
-        'text': 'text2 text2'
-    },
-        {
-        'text': 'text text'
-    },
-        {
-        'text': 'text text'
-    },
-        {
-        'text': 'text text'
-    },
-        {
-        'text': 'text text'
-    },
-        {
-        'text': 'text text'
-    },
-        {
-        'text': 'text text'
-    }
-]
-
 
 for idx, ids, pl, value in zip(name_blocks, type_blocks, placeholders, values):
         getRegBlocks.append({
@@ -119,7 +92,6 @@ def paginate (array, request):
 
 def main_page(request):
     questions = Question.objects.all_questions()
-    print(questions)
     page_obj, page = paginate(questions, request)
 
     best_members = UserProfile.objects.best_members()
@@ -135,6 +107,9 @@ def main_page(request):
         })
 
 def form_with_settings(request):
+    best_members = UserProfile.objects.best_members()
+    popular_tags = Tag.objects.popular_tags()
+
     return render(request, 'form_with_settings.html', {
         'popular_tags': popular_tags,
         'best_members': best_members,
@@ -142,17 +117,15 @@ def form_with_settings(request):
         })
 
 def question_by_tag(request, tag):
-    questions_ = []
-    for idx in questions:
-        for ids in questions['tags']:
-            if ids == tag:
-                questions_.append(idx)
+    best_members = UserProfile.objects.best_members()
+    popular_tags = Tag.objects.popular_tags()
+
+    questions_ = Question.objects.questions_by_tag(tag)
 
     page_obj, page = paginate(questions_, request)
 
     return render(request, 'question_by_tag.html', {
         'questions': page_obj,
-        'tags': tags,
         'page': page,
         'tag': tag,
         'popular_tags': popular_tags,
@@ -160,6 +133,10 @@ def question_by_tag(request, tag):
     })
 
 def hot_questions(request):
+    best_members = UserProfile.objects.best_members()
+    popular_tags = Tag.objects.popular_tags()
+
+    questions = Question.objects.hot_questions()
     page_obj, page = paginate(questions, request)
 
     return render(request, 'hot_questions.html', {
@@ -171,21 +148,28 @@ def hot_questions(request):
         })
 
 def one_question_page(request, num_quest):
-    question = questions[int(num_quest)]
-    print(question)
-    print(question['answers'])
-    print(answers[:question['answers']])
+    question = Question.objects.one_question(int(num_quest))
+
+    answers = Answer.objects.answers_by_que(int(num_quest))
+
+    page_obj, page = paginate(answers, request)
+
+    best_members = UserProfile.objects.best_members()
+    popular_tags = Tag.objects.popular_tags()
 
     return render(request, 'one_question_page.html', {
-        'question': question,
+        'question': question[0],
+        'answers': page_obj,
+        'page': page,
         'tags': tags,
         'num_q': num_quest,
-        'answers': answers[:question['answers']],
         'popular_tags': popular_tags,
         'best_members': best_members
     })
 
 def autorisation(request):
+    best_members = UserProfile.objects.best_members()
+    popular_tags = Tag.objects.popular_tags()
     return render(request, 'autorisation.html', {
         'logs': login,
         'popular_tags': popular_tags,
@@ -193,13 +177,17 @@ def autorisation(request):
         })
 
 def registration(request):
+    best_members = UserProfile.objects.best_members()
+    popular_tags = Tag.objects.popular_tags()
     return render(request, 'registration.html', {
         'getRegBlocks': getRegBlocks,
         'popular_tags': popular_tags,
-        'best_members': best_members
+        'best_members': best_members,
         })
 
 def add_question(request):
+    best_members = UserProfile.objects.best_members()
+    popular_tags = Tag.objects.popular_tags()
     return render(request, 'add_question.html', {
         'popular_tags': popular_tags,
         'best_members': best_members
