@@ -2,7 +2,7 @@
 
 <div class="row answer-box">
     <div class="col-3">
-        <img class="q-image-answer" src="{% static "img/grandbeauty00.jpg" %}" title="Светланочка">
+        <img class="q-image-answer" src="{{ question.author.image_profile }}" title="Светланочка">
         <div class="parent">
             <a href="javascript:void(0)" class="like-button like-button-up">
                 <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
@@ -12,18 +12,18 @@
             </a>
         </div>
         <div class='num-likes'>
-            <p> {{ question.likes.all.count }} likes </p>
-            <p> {{ question.dislikes.all.count }} dislikes </p>
+            <p> {{ question.likes }} likes </p>
+            <p> {{ question.dislikes }} dislikes </p>
         </div>
     </div>
     <div class="col-9">
-        <h2><a href="/question/{{ nun_q }}">{{ question.title }}</a></h2>
+        <h2><a href="/question/{{ question.id }}">{{ question.title }}</a></h2>
         <p class="Datetime">{{ question.date_create }}</p>
         <p>{{ question.text }}
         </p>
         <div class="footer-column">
             <p class="tags">Tags:</p>
-            {% for tag in tags %} 
+            {% for tag in question.tags.all %} 
             <a href="/tag/{{ tag }}">{{ tag }}</a>
             <p></p>
             {% endfor %}

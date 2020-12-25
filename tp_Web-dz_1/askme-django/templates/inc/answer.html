@@ -2,7 +2,7 @@
 
 <div class="row question-box">
     <div class="col-3">
-        <img class="q-image" src="{% static "img/grandbeauty00.jpg" %}" title="Светланочка">
+        <img class="q-image" src="{{ question.author.image_profile }}" title="Светланочка">
         <div class="parent">
             <a href="javascript:void(0)" class="like-button like-button-up">
                 <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
@@ -12,8 +12,8 @@
             </a>
         </div>
         <div class='num-likes'>
-            <p> {{ answer.likes.all.count }} likes </p>
-            <p> {{ answer.dislikes.all.count }} dislikes </p>
+            <p> {{ answer.likes }} likes </p>
+            <p> {{ answer.dislikes }} dislikes </p>
         </div>
     </div>
     <div class="col-9">

@@ -107,6 +107,7 @@
   
     h2 {
       margin-top: 15px;
+
     }
   
     h2 a {
@@ -393,4 +394,10 @@
   
   .ans {
       margin-top: 40px;
+  }
+
+  .title-h2 {
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }

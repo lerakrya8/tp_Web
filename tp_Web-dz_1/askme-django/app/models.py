@@ -22,7 +22,7 @@ class AnswerManager(models.Manager):
 
 class TagManager(models.Manager):
     def popular_tags(self):
-        return self.all()[:9]
+        return self.all().order_by('-rating')[:9]
 
 class ProfileManager(models.Manager):
     def best_members(self):
