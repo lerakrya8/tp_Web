@@ -1,0 +1,18 @@
+{% extends 'inc/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="main-header">
+    <p class="tag">Settings: </p>
+    <p class="tag">Лерочка</p>
+</div>
+<form>
+    {% for block in settings %}
+      {% include 'inc/one_block.html' %}
+    {% endfor %}
+    
+    {% include 'inc/img.html' %}
+</form>
+<button type="button" class="btn btn-outline-info btn-ask">Save</button>
+{% endblock content %}
