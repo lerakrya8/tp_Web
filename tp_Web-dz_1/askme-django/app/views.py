@@ -3,6 +3,13 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from app.models import Question, Tag, Answer, UserProfile
 
+from app.forms import LoginForm, Registration
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import auth
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout as django_logout
 popular_tags = [
     'technopark',
     'C/C+',
@@ -167,11 +174,27 @@ def one_question_page(request, num_quest):
         'best_members': best_members
     })
 
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect('main_page')
+
 def autorisation(request):
+    if request.method == 'GET':
+        form = LoginForm()
+    else:
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = auth.authenticate(request, **form.cleaned_data)
+            if user is not None:
+                auth.login(requesr, user)
+                return redirect('main_page')
+
     best_members = UserProfile.objects.best_members()
     popular_tags = Tag.objects.popular_tags()
     return render(request, 'autorisation.html', {
-        'logs': login,
+        # 'logs': login,
+        'form': form,
         'popular_tags': popular_tags,
         'best_members': best_members
         })
@@ -179,15 +202,32 @@ def autorisation(request):
 def registration(request):
     best_members = UserProfile.objects.best_members()
     popular_tags = Tag.objects.popular_tags()
+
+    if request.method == 'GET':
+        form = Registration()
+        # avatar_form = AvatarForm()
+        print('tut')
+    else:
+        print("регистрируемся")
+        form = Registration(data=request.POST, files=request.FILES)
+        # avatar_form = AvatarForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            user = form.save()
+            auth.login(request, user)
+            # avatar_form.save()
+            return redirect('main_page')
+
     return render(request, 'registration.html', {
         'getRegBlocks': getRegBlocks,
+        'form': form,
         'popular_tags': popular_tags,
-        'best_members': best_members,
+        'best_members': best_members
         })
 
 def add_question(request):
     best_members = UserProfile.objects.best_members()
     popular_tags = Tag.objects.popular_tags()
+
     return render(request, 'add_question.html', {
         'popular_tags': popular_tags,
         'best_members': best_members
