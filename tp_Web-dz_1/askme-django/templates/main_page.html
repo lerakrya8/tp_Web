@@ -1,4 +1,5 @@
 {% extends 'inc/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -16,4 +17,8 @@
 {% block navigation %}
     {% include 'inc/paginator.html' %}
 {% endblock navigation %}
+
+{% block jscode %}
+    <script src="{% static '/js/like.js' %}"></script>
+{% endblock jscode %}
 

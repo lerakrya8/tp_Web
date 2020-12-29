@@ -3,18 +3,15 @@
 <div class="row answer-box">
     <div class="col-3">
         <img class="q-image-answer" src="{{ question.author.image_profile }}" title="Светланочка">
-        <div class="parent">
-            <a href="javascript:void(0)" class="like-button like-button-up">
-                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-            </a>
-            <a href="javascript:void(0)" class="like-button like-button-down">
-                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-            </a>
-        </div>
-        <div class='num-likes'>
+        <div class='like'>
+            <button class='like-toggle basic js-like' data-qid="{{ question.pk }}">♥</button>
+              <p class="number-of-likes" id="questions_likes-{{ question.pk }}">{{ question.likes }}</p>
+<!--              <span class='hidden' >1 Like</span>-->
+          </div>
+        <!-- <div class='num-likes'>
             <p> {{ question.likes }} likes </p>
             <p> {{ question.dislikes }} dislikes </p>
-        </div>
+        </div> -->
     </div>
     <div class="col-9">
         <h2><a href="/question/{{ question.id }}">{{ question.title }}</a></h2>

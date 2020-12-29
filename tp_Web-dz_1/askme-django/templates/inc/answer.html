@@ -2,28 +2,38 @@
 
 <div class="row question-box">
     <div class="col-3">
-        <img class="q-image" src="{{ question.author.image_profile }}" title="Светланочка">
-        <div class="parent">
-            <a href="javascript:void(0)" class="like-button like-button-up">
-                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-            </a>
-            <a href="javascript:void(0)" class="like-button like-button-down">
-                <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
-            </a>
-        </div>
-        <div class='num-likes'>
+        <img class="q-image" src="{{ question.author.user.userprofile.image_profile.url }}" title="Светланочка">
+        <div class='like'>
+            <button class='like-toggle basic js-like' data-qid="{{ question.pk }}">♥</button>
+              <p class="number-of-likes" id="questions_likes-{{ question.pk }}">{{ question.likes }}</p>
+<!--              <span class='hidden' >1 Like</span>-->
+          </div>
+        <!-- <div class='num-likes'>
             <p> {{ answer.likes }} likes </p>
             <p> {{ answer.dislikes }} dislikes </p>
-        </div>
+        </div> -->
     </div>
     <div class="col-9">
         <p class="answer"> {{ answer.text }}
         </p>
-        <div class="form-check footer-column">
-            <input class="form-check-input" type="checkbox" value="{{ answer.correct }}" id="defaultCheck1">
-            <label class="form-check-label" for="defaultCheck1">
-                Correct!
+        <div class="custom-control custom-checkbox">
+            {% if question.Author.user.profile == request.user.profile %}
+            <input class="js-correct" data-id="{{ answer.pk }}" type="checkbox" id="correct-{{ answer.pk }}" {% if answer.is_correct %} checked {% endif %}>
+            <label class="form-check-label" for="correct-{{ answer.pk }}" {% if answer.is_correct %} style="color: #0fd91c;"
+                   {% else %} style="color: #d90f3c;" {% endif %}>
+				Correct!
             </label>
+            {% else %}
+            {% if answer.is_correct %}
+                <label class="form-check-label" for="correct-{{ answer.pk }}" style="color: #0fd91c;">
+                    Correct!
+                </label>
+            {% else %}
+                <label class="form-check-label" for="correct-{{ answer.pk }}" style="color: #d90f3c;">
+                    Not Correct!
+                </label>
+            {% endif %}
+            {% endif %}
         </div>
         <p class="Datetime ans">{{ answer.date_create }}</p>
     </div>

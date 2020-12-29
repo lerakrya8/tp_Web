@@ -4,7 +4,7 @@ from django.db.models import Count
 
 class QuestionManager(models.Manager):
     def all_questions(self):
-        return self.all().order_by('-date_create').reverse()
+        return self.all().order_by('-date_create')
 
     def hot_questions(self):
         return self.annotate(sum_likes = Count('likes')).order_by('-sum_likes').reverse()
@@ -31,7 +31,7 @@ class ProfileManager(models.Manager):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
-    image_profile = models.ImageField(blank=True)
+    image_profile = models.ImageField(blank=True, upload_to='avatar/%y/%m/%d', default='grandbeauty00.jpg')
     nickname = models.CharField(max_length=256, verbose_name='Псевдоним')
 
     objects = ProfileManager()

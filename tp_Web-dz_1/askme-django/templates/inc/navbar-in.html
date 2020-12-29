@@ -10,15 +10,15 @@
             
             <form class="form-inline mt-2 mt-md-0 padd">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">ASK!</button>
+                <a class="btn btn-outline-light my-2 my-sm-0" href="ask">ASK!</a>
             </form>
-                <a class="image-href" href="https://park.mail.ru/blog/topic/view/16975/"><img class="image" src='{% static 'img/1000-f2081a46af465acdf1b605e5cd9994b8.jpg' %}' title="Profile"></a>
+            <a class="image-href" href="https://park.mail.ru/blog/topic/view/16975/"><img class="image" src='{{ request.user.userprofile.image_profile.url }}' title="Profile"></a>
                 
                 <div class="settings">
-                    <p class="name">Hello, Лерочка!</p>
+                    <p class="name">Hello, {{request.user.username}}!</p>
                     <div class="sett-lod-in">
-                        <a  href="/settings">settings</a>
-                        <a href="/login">log out</a>
+                        <a  href="settings">settings</a>
+                        <a href="login">log out</a>
                     </div>
                 </div>
         </div>

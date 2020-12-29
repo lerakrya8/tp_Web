@@ -5,42 +5,50 @@
 {% block content %}
 <div class="main-header">
     <p class="tag">Settings: </p>
-    <p class="tag">Лерочка</p>
+    <p class="tag">{{ request.user.username }}</p>
 </div>
 <form class="mt-4" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="form-group row">
     <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Login</label>
     <div class="col-sm-10">
-      <!-- {{ form.user_login }} -->
-      <input type='text' class="form-control form-control-lg" id="colFormLabelLg" value="valerochka">
+      {{ form.login }}
+      <!-- <input type='text' class="form-control form-control-lg" id="colFormLabelLg" value=""> -->
     </div>
   </div>
   <div class="form-group row">
     <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Email</label>
     <div class="col-sm-10">
-      <!-- {{ form.email }} -->
-      <input type='email' class="form-control form-control-lg" id="colFormLabelLg" value='lerakrya8@gmail.com'>
+      {{ form.email }}
+      <!-- <input type='email' class="form-control form-control-lg" id="colFormLabelLg" value='lerakrya8@gmail.com'> -->
     </div>
   </div>
   <div class="form-group row">
     <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Nickname</label>
     <div class="col-sm-10">
-      <!-- {{ form.password }} -->
-      <input type='text' class="form-control form-control-lg" id="colFormLabelLg" value="lerakrya">
+      {{ form.username }}
+      <!-- <input type='text' class="form-control form-control-lg" id="colFormLabelLg" value="lerakrya"> -->
     </div>
   </div>
   <div class="form-group row">
     <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Password</label>
     <div class="col-sm-10">
-      <!-- {{ form.password }} -->
-      <input type='password' class="form-control form-control-lg" id="colFormLabelLg" value="velvalerches">
+      {{ form.password }}
+      <!-- <input type='password' class="form-control form-control-lg" id="colFormLabelLg" value="velvalerches"> -->
     </div>
   </div>
+  <div class="form-group row short">
+    <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Upload avatar</label>
+    <div class="col-sm-10">
+<!--          <input type="file" class="form-control-file" id="exampleFormControlFile1">-->
+        {{ avatar_form }}
+  </div>
+</div>
     <!-- {% for block in settings %}
       {% include 'inc/one_block.html' %}
     {% endfor %} -->
     
-    {% include 'inc/img.html' %}
+
 <button type="submit" class="btn btn-outline-info btn-ask">Save</button>
+</form>
 {% endblock content %}

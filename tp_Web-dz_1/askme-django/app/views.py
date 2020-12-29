@@ -3,9 +3,11 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from app.models import Question, Tag, Answer, UserProfile
 
-from app.forms import LoginForm, Registration
+from app.forms import LoginForm, Registration, SettingsForm, QuestionForm, AnswerForm, AvatarForm
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import auth
+from django.urls import reverse
+from django.views.decorators.http import require_POST
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -113,11 +115,41 @@ def main_page(request):
         'best_members': best_members
         })
 
+@login_required
 def form_with_settings(request):
     best_members = UserProfile.objects.best_members()
     popular_tags = Tag.objects.popular_tags()
 
+    if request.method == 'GET':
+        form = SettingsForm()
+        avatar_form = AvatarForm()
+        print('tut')
+    else:
+        print("регистрируемся")
+        form = SettingsForm(data=request.POST)
+        avatar_form = AvatarForm(data=request.POST, files=request.FILES, instance=request.user.userprofile)
+        print(request.FILES)
+        if form.is_valid():
+            user = request.user
+            print('валидный')
+            if form.cleaned_data["login"] != user.username and form.cleaned_data["login"] != '':
+                user.name = form.cleaned_data["login"]
+            if form.cleaned_data["username"] != user.username and form.cleaned_data["username"] != '':
+                user.username = form.cleaned_data["username"]
+            if form.cleaned_data["email"] != user.email and form.cleaned_data["email"] != '':
+                user.email = form.cleaned_data["email"]
+            if form.cleaned_data["password"] != '':
+                user.set_password(form.cleaned_data["password"])
+            user.save()
+            auth.login(request, user)
+            # if avatar_form.get('image_profile', None) is not None:
+            avatar_form.save()
+            return redirect('main_page')
+
+
     return render(request, 'form_with_settings.html', {
+        'form': form,
+        'avatar_form': avatar_form,
         'popular_tags': popular_tags,
         'best_members': best_members,
         'settings': settings
@@ -164,10 +196,27 @@ def one_question_page(request, num_quest):
     best_members = UserProfile.objects.best_members()
     popular_tags = Tag.objects.popular_tags()
 
+    if request.method == 'GET':
+        form = AnswerForm()
+    else:
+        form = AnswerForm(data=request.POST)
+        if form.is_valid() and request.user.is_authenticated:
+            que = Question.objects.get(id=num_quest)
+            answer = Answer.objects.create(author=request.user.userprofile,
+                                           question=que,
+                                           text=form.cleaned_data['text'])
+            que.answers += 1
+            que.save()
+            answer.save()
+            print(page)
+            return redirect(reverse('one_question', kwargs={'num_quest': que.pk})
+            + f"?page={len(page_obj)}")
+
     return render(request, 'one_question_page.html', {
         'question': question[0],
         'answers': page_obj,
         'page': page,
+        'form': form,
         'tags': tags,
         'num_q': num_quest,
         'popular_tags': popular_tags,
@@ -187,7 +236,7 @@ def autorisation(request):
         if form.is_valid():
             user = auth.authenticate(request, **form.cleaned_data)
             if user is not None:
-                auth.login(requesr, user)
+                auth.login(request, user)
                 return redirect('main_page')
 
     best_members = UserProfile.objects.best_members()
@@ -205,16 +254,16 @@ def registration(request):
 
     if request.method == 'GET':
         form = Registration()
-        # avatar_form = AvatarForm()
+        avatar_form = AvatarForm()
         print('tut')
     else:
         print("регистрируемся")
-        form = Registration(data=request.POST, files=request.FILES)
-        # avatar_form = AvatarForm(data=request.POST, files=request.FILES)
+        form = Registration(data=request.POST)
+        avatar_form = AvatarForm(data=request.POST, files=request.FILES)
         if form.is_valid():
-            user = form.save()
+            user, profile = form.save()
             auth.login(request, user)
-            # avatar_form.save()
+            avatar_form.save()
             return redirect('main_page')
 
     return render(request, 'registration.html', {
@@ -224,11 +273,106 @@ def registration(request):
         'best_members': best_members
         })
 
+@login_required
 def add_question(request):
     best_members = UserProfile.objects.best_members()
     popular_tags = Tag.objects.popular_tags()
 
+    if request.method == 'GET':
+        form = QuestionForm()
+    else:
+        form = QuestionForm(data=request.POST)
+        if form.is_valid():
+            question = Question.objects.create(author=request.user.userprofile,
+                                               title=form.cleaned_data['title'],
+                                               text=form.cleaned_data['text'])
+            tags = form.cleaned_data['tags']
+            question.tags.set(tags)
+            question.save()
+            return redirect(reverse('one_question', kwargs={'num_quest': question.pk}))
+
     return render(request, 'add_question.html', {
+        'form': form,
         'popular_tags': popular_tags,
         'best_members': best_members
     })
+
+@require_POST
+@login_required
+def like_question(request):
+    data = request.POST
+    if Like.objects.filter(user=request.user.userprofile, question_id=data['qid']).exists():
+        print('Уже существует')
+        question = Question.objects.get(pk=data['qid'])
+        return JsonResponse({'questions_likes': question.likes})
+    print('\n\n', '=' * 100)
+    print(data)
+    print('=' * 100, '\n\n')
+    like = Like.objects.create(user=request.user.userprofile, question_id=data['qid'])
+    print(like)
+    like.save()
+    question = Question.objects.get(pk=data['qid'])
+    question.likes += 1
+    question.save()
+    print(question)
+
+    return JsonResponse({'questions_likes': question.likes})
+
+
+@require_POST
+@login_required
+def like_one_question(request, page_number):
+    data = request.POST
+    if Like.objects.filter(user=request.user.userprofile, question_id=data['qid']).exists():
+        print('Уже существует')
+        question = Question.objects.get(pk=data['qid'])
+        return JsonResponse({'questions_likes': question.likes})
+    print('\n\n', '=' * 100)
+    print(data)
+    print('=' * 100, '\n\n')
+    like = Like.objects.create(user=request.user.userprofile, question_id=data['qid'])
+    print(like)
+    like.save()
+    question = Question.objects.get(pk=data['qid'])
+    question.likes += 1
+    question.save()
+    print(question)
+
+    return JsonResponse({'questions_likes': question.likes})
+
+
+@require_POST
+@login_required
+def like_answer(request, page_number):
+    data = request.POST
+    if AnswersLikes.objects.filter(user=request.user.userprofile, answer_id=data['qid']).exists():
+        print('Уже существует')
+        answer = Answer.objects.get(pk=data['qid'])
+        return JsonResponse({'questions_likes': answer.likes})
+    print('\n\n', '=' * 100)
+    print(data)
+    print('=' * 100, '\n\n')
+    like = AnswersLikes.objects.create(user=request.user.userprofile, answer_id=data['qid'])
+    print(like)
+    like.save()
+    answer = Answer.objects.get(pk=data['qid'])
+    answer.likes += 1
+    answer.save()
+    print(answer)
+
+    return JsonResponse({'answers_likes': answer.likes})
+
+
+@require_POST
+@login_required
+def is_correct_answer(request, page_number):
+    data = request.POST
+    print(data)
+    current_answer = Answer.objects.get(pk=data['id'])
+    if current_answer.is_correct:
+        current_answer.is_correct = False
+    else:
+        current_answer.is_correct = True
+    current_answer.save()
+    print(current_answer.is_correct)
+    return JsonResponse({'is_correct': current_answer.is_correct})

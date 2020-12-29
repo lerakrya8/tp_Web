@@ -14,7 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
+from django.conf.urls.static import static
+from django.conf import settings
 # from django.urls import include, re_path
 
 from app import views
@@ -30,4 +32,8 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('singup/', views.registration, name='sing_up'),
     path('ask/', views.add_question, name='ask'),
-]
+    re_path(r'^one_question_page/(\d+)/like', views.like_one_question, name='like_one_question'),
+    re_path(r'^one_question_page/(\d+)/answer-like', views.like_answer, name='like_answer'),
+    path('like', views.like_question, name='like'),
+    path('one_question_page/<int:page_number>/correct', views.is_correct_answer, name='is_correct_answer'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
