@@ -25,6 +25,7 @@
     .image{
       height: 60px;
       border-radius: 5px;
+      width: 60px;
     }
   
     .image:hover {

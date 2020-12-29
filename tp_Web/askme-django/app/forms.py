@@ -14,9 +14,6 @@ class LoginForm(forms.Form):
 
 
 class Registration(forms.Form):
-    login = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'form-control form-control-lg',
-    }))
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={
         'class': 'form-control form-control-lg',
     }))
