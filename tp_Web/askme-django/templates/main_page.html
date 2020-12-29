@@ -1,0 +1,24 @@
+{% extends 'inc/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-header">
+    <a href="{% url "main_page" %}" class="selected">New Questions</a>
+    <a href="{% url "hot" %}">Hot Questions</a>
+</div>
+
+{% for question in questions %}
+    {% include 'inc/one_question.html' %}
+{% endfor %}
+
+{% endblock content %}
+
+{% block navigation %}
+    {% include 'inc/paginator.html' %}
+{% endblock navigation %}
+
+{% block jscode %}
+    <script src="{% static '/js/like.js' %}"></script>
+{% endblock jscode %}
+

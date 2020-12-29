@@ -1,0 +1,33 @@
+{% load static %}
+
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top color-bk">
+        <a class="navbar-brand" href="/">ask.me</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            
+            <form class="form-inline mt-2 mt-md-0 padd">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <a class="btn btn-outline-light my-2 my-sm-0" href="{% url "ask" %}">ASK!</a>
+            </form>
+            {% if request.user.is_authenticated %}
+            <a class="image-href" href="https://park.mail.ru/blog/topic/view/16975/"><img class="image" src='{{ request.user.userprofile.image_profile.url }}' title="Profile"></a>
+                
+                <div class="settings">
+                    <p class="name">Hello, {{request.user.username}}!</p>
+                    <div class="sett-lod-in">
+                        <a  href="{% url "settings" %}">settings</a>
+                        <a href="{% url "logout" %}">log out</a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="sett-lod-in log">
+                    <a  href="/settings">settings</a>
+                    <a href="/login">log in</a>
+                </div>
+                {% endif %}
+        </div>
+    </nav>
+</header>

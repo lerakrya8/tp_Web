@@ -1,0 +1,33 @@
+{% extends 'inc/base.html' %}
+{% block content %}
+
+{% block navbar %}
+{% include 'inc/navbar-in.html' %}
+{% endblock navbar %}
+{% load bootstrap4 %}
+<p class="new-question">Log In</p>
+<p class="error">{{ form.errors }}</p>
+
+<form class="mt-4" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="form-group row">
+    <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Login</label>
+    <div class="col-sm-10">
+      {{ form.username }}
+      <!-- <input type='text' class="form-control form-control-lg" id="colFormLabelLg"> -->
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Password</label>
+    <div class="col-sm-10">
+      {{ form.password }}
+      <!-- <input type='password' class="form-control form-control-lg" id="colFormLabelLg"> -->
+    </div>
+  </div>
+  <!-- {% for block in logs %}
+  {% include 'inc/one_block.html' %}
+{% endfor %} -->
+<button type="submit" class="btn btn-outline-info btn-ask">Log In!</button>
+<a class="new-account" href="/singup">create new account</a>
+{% endblock content %}
+                    
